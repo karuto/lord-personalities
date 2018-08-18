@@ -1,5 +1,6 @@
 import React from 'react';
 import {lords} from '../../utils/data.js';
+import {initFirebase} from '../../utils/firebase.js';
 import Footer from '../footer';
 
 class Page extends React.Component {
@@ -14,6 +15,11 @@ class Page extends React.Component {
             headingGlobal: 'Mount & Blade Lord Personalities Recorder',
             subheadingGlobal: 'Tried of remembering which lord is a gentlemen or an asshole? Say no more.'
         };
+
+        this.firebase = initFirebase();
+
+        const obj = {a: 'hi', b: 'go'};
+        console.log(this.firebase.database().ref('users/foo').set(obj));
     }
 
     render() {
