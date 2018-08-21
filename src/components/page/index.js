@@ -1,7 +1,7 @@
 import React from 'react';
-import {lords} from '../../utils/data.js';
-import {initFirebase} from '../../utils/firebase.js';
+// import {db} from '../../utils/database.js';
 import Footer from '../footer';
+import Table from '../table';
 
 class Page extends React.Component {
     constructor(props) {
@@ -13,18 +13,11 @@ class Page extends React.Component {
 
         this.strings = {
             headingGlobal: 'Mount & Blade Lord Personalities Recorder',
-            subheadingGlobal: 'Tried of remembering which lord is a gentlemen or an asshole? Say no more.'
+            subheadingGlobal: 'Tired of remembering which lord is a gentlemen or an asshole? Say no more.'
         };
-
-        this.firebase = initFirebase();
-
-        const obj = {a: 'hi', b: 'go'};
-        console.log(this.firebase.database().ref('users/foo').set(obj));
     }
 
     render() {
-        const lordNames = lords.map(lord => <h3>{lord}</h3>);
-
         return (
             <div className='container container--global'>
                 <div className='overlay'>
@@ -34,7 +27,7 @@ class Page extends React.Component {
                     </header>
                 </div>
                 <div className='container container--contents'>
-                    {this.config.isContentVisible ? lordNames : null}
+                    {this.config.isContentVisible ? <Table /> : null}
                 </div>
                 <Footer />
             </div>

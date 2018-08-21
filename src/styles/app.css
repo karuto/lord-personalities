@@ -295,11 +295,11 @@ textarea {
 html {
     line-height: 1;
     background: #eee;
-    font-family: "Noto Serif","Hiragino Sans GB","冬青黑","Microsoft YaHei","微软雅黑",SimSun,"宋体",serif;
+    font-family: Roboto,"Hiragino Sans GB","冬青黑","Microsoft YaHei","微软雅黑",SimSun,"宋体",sans-serif;
 }
 h1, h2, h3, h4, h5, h6 {
     line-height: 1;
-    font-family: Roboto,"Hiragino Sans GB","冬青黑","Microsoft YaHei","微软雅黑",SimSun,"宋体",sans-serif;
+    font-family: "Noto Serif","Hiragino Sans GB","冬青黑","Microsoft YaHei","微软雅黑",SimSun,"宋体",serif;
 }
 a,
 a:visited,
@@ -371,6 +371,26 @@ a:active {
   Contents
   ========================================================================== */
 .container--contents {
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+thead {
+
+}
+tbody {
+
+}
+tr {
+    padding: 8px 0;
+}
+tr:nth-child(even) {
+    background: lightgrey;
+}
+td {
+
 }
 
 /* ==========================================================================
