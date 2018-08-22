@@ -19,61 +19,66 @@ export default class Table extends React.Component {
             }
         };
 
-        const lordsData = {};
+        const lordsData = [];
         lords.map((lordName) => {
-            lordsData[lordName] = {
+            lordsData.push({
                 name: lordName,
                 personality: this.config.personalities.unknown,
                 vassalage: false
-            };
+            });
         });
-        this.state = lordsData;
+        this.state = {lords: lordsData};
+        console.log('### init =', JSON.stringify(this.state.lords));
 
         // bindAndInitDatabase(this);
         this.db = window.localStorage;
         this.initLocalStorage();
 
         // need to bind these functions because they are called externally
-        this.personalityHanlder = this.personalityHanlder.bind(this);
-        this.vassalageHanlder = this.vassalageHanlder.bind(this);
+        this.getLordFrom = this.getLordFrom.bind(this);
+        this.attributeHanlder = this.attributeHanlder.bind(this);
         this.compareBy = this.compareBy.bind(this);
         this.sortBy = this.sortBy.bind(this);
     }
 
-    personalityHanlder(event) {
-        event.preventDefault();
+    getLordFrom(lordName, source) {
+        if (source === undefined) {
+            // if optional source isn't supplied, default source is state array
+            source = this.state.lords;
+        }
 
-        // construct new lord object
-        const lordName = event.target.getAttribute('lordname');
-        console.log('table old lord =', lordName, this.state[lordName]);
-        let newLord = this.state[lordName];
-        newLord.personality = parseInt(event.target.value);
-        console.log('table new lord =', newLord);
-
-        // construct new state object and assign
-        let newState = {};
-        newState[lordName] = newLord;
-        this.setState(newState);
-
-        // save to LocalStorage
-        this.saveToLocalStorage();
+        // validate array
+        if (typeof source === 'object' && source.length !== undefined) {
+            return source.find((lord) => {
+                return lord.name === lordName
+            });
+        }
+        console.warn('Warning: Lords is not a valid array.');
+        return null;
     }
 
-    vassalageHanlder(event) {
+    attributeHanlder(event) {
         event.preventDefault();
-        const isVassal =  event.target.checked;
+        const type = event.target.getAttribute('type');
+        let attribute, value;
+
+        if (type === 'radio') {
+            attribute = 'personality';
+            value = parseInt(event.target.value);
+        } else if (type === 'checkbox') {
+            attribute = 'vassalage';
+            value = event.target.checked;
+        }
+
+        const localLords = this.state.lords;
 
         // construct new lord object
         const lordName = event.target.getAttribute('lordname');
-        console.log('table old lord =', this.state[lordName]);
-        let newLord = this.state[lordName];
-        newLord.vassalage = isVassal;
-        console.log('table new lord =', newLord);
+        let newLord = this.getLordFrom(lordName, localLords);
+        newLord[attribute] = value;
 
         // construct new state object and assign
-        let newState = {};
-        newState[lordName] = newLord;
-        this.setState(newState);
+        this.setState({lords: localLords});
 
         // save to LocalStorage
         this.saveToLocalStorage();
@@ -103,51 +108,43 @@ export default class Table extends React.Component {
         }
     }
 
-    compareBy(lords, key) {
+    compareBy(key) {
         return function (a, b) {
-            const lordA = lords[a];
-            const lordB = lords[b];
-            // console.log(lordA, lordA[key], lordB, lordB[key]);
-            if (lordA[key] < lordB[key]) return -1;
-            if (lordA[key] > lordB[key]) return 1;
+            // console.log('### compare =\n', a, a[key], '\n', b, b[key], '\n', a[key]>b[key]);
+            if (key === 'vassalage') {
+                // special case for comparing false & true
+                if (a[key] < b[key]) return 1;
+                if (a[key] > b[key]) return -1;
+            } else {
+                if (a[key] < b[key]) return -1;
+                if (a[key] > b[key]) return 1;
+            }
         return 0;
         };
     }
 
     sortBy(key) {
-        let oldLordsObj = this.state;
-        const newLordsObj = {};
-        console.log('### before sort =', oldLordsObj);
+        let sortedlords = this.state.lords;
 
-        // https://stackoverflow.com/questions/5467129/sort-javascript-object-by-key
-        Object
-            .keys(oldLordsObj)
-            .sort(this.compareBy(oldLordsObj, key))
-            .forEach((key) => {
-                newLordsObj[key] = oldLordsObj[key];
-            });
-        console.log('### after sort =', newLordsObj);
-        this.setState(newLordsObj, () => {
+        sortedlords.sort(this.compareBy(key))
+        this.setState({lords: sortedlords}, () => {
             // save to LocalStorage
-            console.log('### setstate done =', this.state);
             this.saveToLocalStorage();
         });
     }
 
     render() {
-        console.log('table render init =', this.state);
+        console.log('table render init =', JSON.stringify(this.state.lords));
 
-        let lordRows = [];
-        for (const lordKey in this.state) {
-            const lord = this.state[lordKey];
-             lordRows.push(
-                <tr key={lord.name}>
-                    <td>{lord.name}</td>
-                    <TogglePersonality handler={this.personalityHanlder} lord={lord} config={this.config} />
-                    <ToggleVassalage handler={this.vassalageHanlder} lord={lord} />
-                </tr>
-            );
-        }
+        const lordRows = this.state.lords.map((lord) => {
+            return (
+               <tr key={lord.name}>
+                   <td>{lord.name}</td>
+                   <TogglePersonality handler={this.attributeHanlder} lord={lord} config={this.config} />
+                   <ToggleVassalage handler={this.attributeHanlder} lord={lord} />
+               </tr>
+           );
+        });
 
         return (
             <table>
