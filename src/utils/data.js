@@ -35,7 +35,7 @@ const lords = [].concat(
     lordsRhodok,
     lordsSarranid,
     lordsSwadia
-);
+).sort();
 
 const fakeLords = ['Doggo', 'Neko'];
 module.exports = {
