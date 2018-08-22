@@ -37,7 +37,8 @@ const lords = [].concat(
     lordsSwadia
 );
 
-
+const fakeLords = ['Doggo', 'Neko'];
 module.exports = {
-    lords
+    lords,
+    fakeLords
 };
