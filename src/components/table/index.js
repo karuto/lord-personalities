@@ -1,6 +1,6 @@
 import React from 'react';
 // import {fakeLords as lords} from '../../utils/data.js'; //debug
-import {fakeLords as lords} from '../../utils/data.js';
+import {lords} from '../../utils/data.js';
 import {bindAndInitDatabase} from '../../utils/database.js';
 import TableHeaders from '../table-headers';
 import {TogglePersonality, ToggleVassalage} from '../table-toggles';
@@ -78,7 +78,9 @@ export default class Table extends React.Component {
         newLord[attribute] = value;
 
         // construct new state object and assign
-        this.setState({lords: localLords});
+        this.setState({lords: localLords}, () => {
+            console.log('### state change complete', JSON.stringify(this.state.lords));
+        });
 
         // save to LocalStorage
         this.saveToLocalStorage();
@@ -95,13 +97,20 @@ export default class Table extends React.Component {
         const state = JSON.stringify(this.state);
 
         if (this.db[key]) {
+            console.log('>>> yep, local storage has some data', this.db[key]);
             // local storage already has lords data
             // retrieve it and compare
-            if (key != state) {
+            if (this.db[key] != state) {
+                console.log('>>> wait, local storage has some data but doesnt match state');
+                console.log('>>> okay, local storage data is going to become state');
                 // if state doesn't match, restore whatever's in the local storage
                 this.state = JSON.parse(this.db.getItem(key));
+            } else {
+                console.log('>>> yep, local storage has some data and matches state, not doing anything');
+                return;
             }
         } else {
+            console.log('>>> nope, local storage has no data, let us save state');
             // local storage does not have lords data
             // save to local storage
             this.db.setItem(key, state);
