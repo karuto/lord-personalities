@@ -381,13 +381,18 @@ table {
 thead {
 
 }
-tbody {
-
+tbody tr {
+    border-bottom: 2px solid white;
 }
-tr {
+th:hover {
+    cursor: pointer;
+    background: lightgrey;
 }
-tr:nth-child(even) {
-    background: #ddd;
+th:hover::after {
+    content: '▼';
+    color: #999;
+    font-size: 60%;
+    padding: 0 8px;
 }
 th,
 td {
@@ -395,11 +400,10 @@ td {
     padding: 8px 16px;
 }
 .th__prompt {
-    font-size: 60%;
+    color: #999;
     padding: 8px 4px;
 }
 .th__prompt:hover {
-    background: lightgrey;
     cursor: pointer;
 }
 .th__modal {
@@ -422,6 +426,37 @@ td {
 }
 .selection__text {
     padding: 0 8px;
+}
+.cell {
+
+}
+.cell--name {
+    width: 20%;
+}
+.cell--vassalage {
+    width: 20%;
+}
+.cell--personality {
+    width: 60%;
+}
+.cell--vassalage:hover,
+.cell--personality:hover {
+    cursor: pointer;
+}
+.row:hover {
+    background: linear-gradient( rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.3) );
+}
+.row--good {
+    background: lightgreen;
+}
+.row--martial {
+    background: lightyellow;
+}
+.row--other {
+    background: lightpink;
+}
+.row--unknown {
+    background: lightgrey;
 }
 
 /* ==========================================================================

@@ -41,7 +41,7 @@ class TogglePersonality extends React.Component {
     render() {
         // console.log('button render =', this.props.lord);
         return (
-            <td>
+            <td className='cell cell--personality'>
                 {this.getButton(this.pConfig.good)}
                 {this.getButton(this.pConfig.martial)}
                 {this.getButton(this.pConfig.bad)}
@@ -64,7 +64,7 @@ class ToggleVassalage extends React.Component {
         const buttonName = `vassalage_${this.props.lord.name}`;
 
         return (
-            <td>
+            <td className='cell cell--vassalage'>
                 <label>
                     <input
                         className='selection__button'
@@ -76,7 +76,7 @@ class ToggleVassalage extends React.Component {
                         onChange={this.props.handler}
                     />
                     <span className='selection__text'>
-                        Vassal
+                        My vassal
                     </span>
                 </label>
             </td>

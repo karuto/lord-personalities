@@ -146,11 +146,28 @@ export default class Table extends React.Component {
         console.log('table render init =', JSON.stringify(this.state.lords));
 
         const lordRows = this.state.lords.map((lord) => {
+            let lordRowClasses = 'row ';
+
+            switch(lord.personality) {
+                case 0:
+                    lordRowClasses += 'row--good'
+                    break;
+                case 1:
+                    lordRowClasses += 'row--martial'
+                    break;
+                case 2:
+                    lordRowClasses += 'row--other'
+                    break;
+                case 3:
+                    lordRowClasses += 'row--unknown'
+                    break;
+            }
+
             return (
-               <tr key={lord.name}>
-                   <td>{lord.name}</td>
-                   <TogglePersonality handler={this.attributeHanlder} lord={lord} config={this.config} />
+               <tr className={lordRowClasses} key={lord.name}>
+                   <td className='cell cell--name'>{lord.name}</td>
                    <ToggleVassalage handler={this.attributeHanlder} lord={lord} />
+                   <TogglePersonality handler={this.attributeHanlder} lord={lord} config={this.config} />
                </tr>
            );
         });
