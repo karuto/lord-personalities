@@ -394,10 +394,10 @@ td {
     text-align: left;
     padding: 8px 16px;
 }
-.personality__radiobutton {
+.selection__button {
     padding: 8px;
 }
-.personality__text {
+.selection__text {
     padding: 0 8px;
 }
 

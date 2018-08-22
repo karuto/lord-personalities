@@ -2,7 +2,7 @@ import React from 'react';
 // import {fakeLords as lords} from '../../utils/data.js'; //debug
 import {lords} from '../../utils/data.js';
 import {bindAndInitDatabase} from '../../utils/database.js';
-import TogglePersonality from '../toggle-personality';
+import {TogglePersonality, ToggleVassalage} from '../toggles';
 
 export default class Table extends React.Component {
     constructor(props) {
@@ -34,16 +34,37 @@ export default class Table extends React.Component {
 
         // need to bind these functions because they are called externally
         this.personalityHanlder = this.personalityHanlder.bind(this);
+        this.vassalageHanlder = this.vassalageHanlder.bind(this);
     }
 
     personalityHanlder(event) {
         event.preventDefault();
 
         // construct new lord object
-        const lordName = event.target.name;
-        console.log('table old lord =', this.state[lordName]);
+        const lordName = event.target.getAttribute('lordname');
+        console.log('table old lord =', lordName, this.state[lordName]);
         let newLord = this.state[lordName];
         newLord.personality = parseInt(event.target.value);
+        console.log('table new lord =', newLord);
+
+        // construct new state object and assign
+        let newState = {};
+        newState[lordName] = newLord;
+        this.setState(newState);
+
+        // save to LocalStorage
+        this.saveToLocalStorage();
+    }
+
+    vassalageHanlder(event) {
+        event.preventDefault();
+        const isVassal =  event.target.checked;
+
+        // construct new lord object
+        const lordName = event.target.getAttribute('lordname');
+        console.log('table old lord =', this.state[lordName]);
+        let newLord = this.state[lordName];
+        newLord.vassalage = isVassal;
         console.log('table new lord =', newLord);
 
         // construct new state object and assign
@@ -88,8 +109,8 @@ export default class Table extends React.Component {
              lordRows.push(
                 <tr key={lord.name}>
                     <td>{lord.name}</td>
-                    <TogglePersonality handler={this.personalityHanlder} lord={lord} config={this.config}/>
-                    <td>{lord.vassalage ? 'Yes' : 'No'}</td>
+                    <TogglePersonality handler={this.personalityHanlder} lord={lord} config={this.config} />
+                    <ToggleVassalage handler={this.vassalageHanlder} lord={lord} />
                 </tr>
             );
         }

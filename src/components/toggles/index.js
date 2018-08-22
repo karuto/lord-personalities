@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default class TogglePersonality extends React.Component {
+class TogglePersonality extends React.Component {
     constructor(props) {
         super(props);
         // p = personality shorthand
@@ -18,18 +18,20 @@ export default class TogglePersonality extends React.Component {
     }
 
     getButton(personality) {
-        // console.log('button func =', this.props.lord.name, 'button =', personality, 'checked =', this.props.lord.personality);
+        const buttonName = `personality_${this.props.lord.name}`;
+
         return (
             <label>
                 <input
-                    className='personality__radiobutton'
+                    className='selection__button'
                     type='radio'
-                    name={this.props.lord.name}
+                    lordname={this.props.lord.name}
+                    name={buttonName}
                     value={personality}
                     checked={this.props.lord.personality === personality}
                     onChange={this.props.handler}
                 />
-                <span className='personality__text'>
+                <span className='selection__text'>
                     {this.getPersonality(personality)}
                 </span>
             </label>
@@ -48,3 +50,43 @@ export default class TogglePersonality extends React.Component {
         );
     }
 }
+
+class ToggleVassalage extends React.Component {
+    constructor(props) {
+        super(props);
+    }
+
+    getVassalage(input) {
+        return (input === 'true');
+    }
+
+    render() {
+        const buttonName = `vassalage_${this.props.lord.name}`;
+
+        return (
+            <td>
+                <label>
+                    <input
+                        className='selection__button'
+                        type='checkbox'
+                        lordname={this.props.lord.name}
+                        name={buttonName}
+                        value='true'
+                        checked={this.props.lord.vassalage === true}
+                        onChange={this.props.handler}
+                    />
+                    <span className='selection__text'>
+                        Vassal
+                    </span>
+                </label>
+            </td>
+        );
+    }
+}
+
+
+
+module.exports = {
+    TogglePersonality,
+    ToggleVassalage
+};
