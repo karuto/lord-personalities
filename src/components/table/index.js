@@ -1,6 +1,6 @@
 import React from 'react';
 // import {fakeLords as lords} from '../../utils/data.js'; //debug
-import {lords} from '../../utils/data.js';
+import {fakeLords as lords} from '../../utils/data.js';
 import {bindAndInitDatabase} from '../../utils/database.js';
 import TableHeaders from '../table-headers';
 import {TogglePersonality, ToggleVassalage} from '../table-toggles';
@@ -36,6 +36,8 @@ export default class Table extends React.Component {
         // need to bind these functions because they are called externally
         this.personalityHanlder = this.personalityHanlder.bind(this);
         this.vassalageHanlder = this.vassalageHanlder.bind(this);
+        this.compareBy = this.compareBy.bind(this);
+        this.sortBy = this.sortBy.bind(this);
     }
 
     personalityHanlder(event) {
@@ -101,6 +103,37 @@ export default class Table extends React.Component {
         }
     }
 
+    compareBy(lords, key) {
+        return function (a, b) {
+            const lordA = lords[a];
+            const lordB = lords[b];
+            // console.log(lordA, lordA[key], lordB, lordB[key]);
+            if (lordA[key] < lordB[key]) return -1;
+            if (lordA[key] > lordB[key]) return 1;
+        return 0;
+        };
+    }
+
+    sortBy(key) {
+        let oldLordsObj = this.state;
+        const newLordsObj = {};
+        console.log('### before sort =', oldLordsObj);
+
+        // https://stackoverflow.com/questions/5467129/sort-javascript-object-by-key
+        Object
+            .keys(oldLordsObj)
+            .sort(this.compareBy(oldLordsObj, key))
+            .forEach((key) => {
+                newLordsObj[key] = oldLordsObj[key];
+            });
+        console.log('### after sort =', newLordsObj);
+        this.setState(newLordsObj, () => {
+            // save to LocalStorage
+            console.log('### setstate done =', this.state);
+            this.saveToLocalStorage();
+        });
+    }
+
     render() {
         console.log('table render init =', this.state);
 
@@ -118,7 +151,7 @@ export default class Table extends React.Component {
 
         return (
             <table>
-                <TableHeaders />
+                <TableHeaders sortBy={this.sortBy} />
                 <tbody>
                     {lordRows}
                 </tbody>

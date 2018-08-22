@@ -42,9 +42,9 @@ export default class TableHeaders extends React.Component {
         return (
             <thead>
                 <tr>
-                    <th>Lord Name</th>
-                    <th>Personality Type</th>
-                    <th>
+                    <th onClick={() => this.props.sortBy('name')}>Lord Name</th>
+                    <th onClick={() => this.props.sortBy('personality')}>Personality Type</th>
+                    <th onClick={() => this.props.sortBy('vassalage')}>
                         Vassalage {modalPrompt}
                         {this.getModal()}
                     </th>
