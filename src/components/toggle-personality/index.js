@@ -42,7 +42,8 @@ export default class TogglePersonality extends React.Component {
             <td>
                 {this.getButton(this.pConfig.good)}
                 {this.getButton(this.pConfig.martial)}
-                {this.getButton(this.pConfig.other)}
+                {this.getButton(this.pConfig.bad)}
+                {this.getButton(this.pConfig.unknown)}
             </td>
         );
     }

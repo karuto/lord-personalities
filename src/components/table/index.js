@@ -13,7 +13,8 @@ export default class Table extends React.Component {
             personalities: {
                 good: 0,
                 martial: 1,
-                other: 2
+                bad: 2,
+                unknown: 3
             }
         };
 
@@ -21,7 +22,7 @@ export default class Table extends React.Component {
         lords.map((lordName) => {
             lordsData[lordName] = {
                 name: lordName,
-                personality: this.config.personalities.other,
+                personality: this.config.personalities.unknown,
                 vassalage: false
             };
         });
@@ -33,20 +34,6 @@ export default class Table extends React.Component {
 
         // need to bind these functions because they are called externally
         this.personalityHanlder = this.personalityHanlder.bind(this);
-    }
-
-    initState(lords) {
-        const lordsData = {};
-        lords.map((lordName) => {
-            lordsData[lordName] = {
-                name: lordName,
-                personality: this.config.personalities.other,
-                vassalage: false
-            };
-        });
-        this.setState({lords: lordsData}, () => {
-            console.log('### callback of setState =', this.state)
-        });
     }
 
     personalityHanlder(event) {
