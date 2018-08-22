@@ -2,7 +2,8 @@ import React from 'react';
 // import {fakeLords as lords} from '../../utils/data.js'; //debug
 import {lords} from '../../utils/data.js';
 import {bindAndInitDatabase} from '../../utils/database.js';
-import {TogglePersonality, ToggleVassalage} from '../toggles';
+import TableHeaders from '../table-headers';
+import {TogglePersonality, ToggleVassalage} from '../table-toggles';
 
 export default class Table extends React.Component {
     constructor(props) {
@@ -117,16 +118,10 @@ export default class Table extends React.Component {
 
         return (
             <table>
-                <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Personality</th>
-                    <th>Vassalage</th>
-                </tr>
-            </thead>
-            <tbody>
-                {lordRows}
-            </tbody>
+                <TableHeaders />
+                <tbody>
+                    {lordRows}
+                </tbody>
             </table>
         );
     }

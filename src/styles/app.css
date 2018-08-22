@@ -387,12 +387,35 @@ tbody {
 tr {
 }
 tr:nth-child(even) {
-    background: lightgrey;
+    background: #ddd;
 }
 th,
 td {
     text-align: left;
     padding: 8px 16px;
+}
+.th__prompt {
+    font-size: 60%;
+    padding: 8px 4px;
+}
+.th__prompt:hover {
+    background: lightgrey;
+    cursor: pointer;
+}
+.th__modal {
+    font-size: 14px;
+    max-width: 200px;
+    border: 1px solid lightgrey;
+    border-radius: 4px;
+    position: absolute;
+    padding: 16px;
+    background: white;
+}
+.th__modal__confirm {
+    padding: 16px 0 0;
+}
+.th__modal__confirm:hover {
+    cursor: pointer;
 }
 .selection__button {
     padding: 8px;

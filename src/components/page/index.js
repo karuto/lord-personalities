@@ -12,7 +12,7 @@ class Page extends React.Component {
         };
 
         this.strings = {
-            headingGlobal: 'Mount & Blade Lord Personalities Recorder',
+            headingGlobal: 'Mount & Blade: Warband Lord Personalities Recorder',
             subheadingGlobal: 'Tired of remembering which lord is a gentlemen or an asshole? Say no more.'
         };
     }
